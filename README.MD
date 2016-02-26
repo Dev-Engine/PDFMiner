@@ -20,16 +20,6 @@ Start the website:
     python runserver.py
 
 
-Production config:
-
-    Change the code in 'runserver.py' 
-        "USED_CONF = 'config.DevelopmentConfig'"
-    to
-        "USED_CONF = 'config.ProductionConfig'"
-    and enter more than 15 different random characters in 'config.py'
-        "SECRET_KEY" = 'SomeWordsYouLike12345'
-
-
 License
 -------
 
