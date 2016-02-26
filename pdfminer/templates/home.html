@@ -1,0 +1,8 @@
+{% extends "base.html" %}
+{% block body %}
+  {% if session.logged_in %}
+    Logged in
+  {% else %}
+    Please log in
+  {% endif %}
+{% endblock %}
