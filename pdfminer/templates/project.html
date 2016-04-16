@@ -30,10 +30,10 @@
                 </tr>
             </tbody>
         </table>
-        <form class="pure-form pure-form-stacked" style="width: 10%;margin-left: 20px;">
+        <form class="pure-form pure-form-stacked" style="width: 10%;margin-left: 20px;" action="{{ url_for('project_upload') }}" method="post" enctype="multipart/form-data">
         <fieldset>
             <label for="pdf">Upload a new PDF</label>
-            <input id="pdf" type="file">
+            <input id="pdf" type="file" name="pdffile">
             <button type="submit" class="pure-button pure-button-primary">Submit</button>
         </fieldset>
     </form>

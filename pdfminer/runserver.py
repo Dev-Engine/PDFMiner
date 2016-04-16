@@ -28,16 +28,21 @@ def home():
     return render_template('home.html')
 
 
-@app.route('/project/<project_id>', methods=['GET', 'POST'])
+@app.route('/project/<project_id>')
 def project(project_id):
     """."""
+    return render_template('project.html')
+
+
+@app.route('/project_upload', methods=['POST'])
+def project_upload():
+    """."""
     if request.method == 'POST':
-        file = request.files['file']
+        file = request.files['pdffile']
         if file:
             filename = secure_filename(file.filename)
             file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
-            return redirect(url_for('project',
-                                    project_id=1))
+            return redirect(url_for('project', project_id=1))
     return render_template('project.html')
 
 
