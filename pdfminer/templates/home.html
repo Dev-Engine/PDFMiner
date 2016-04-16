@@ -1,8 +1,74 @@
 {% extends "base.html" %}
 {% block body %}
   {% if session.logged_in %}
-    Logged in
+    <div class="home-menu pure-menu pure-menu-horizontal pure-menu-fixed">
+        <a class="pure-menu-heading" href="/">PDFMiner</a>
+        <ul class="pure-menu-list">
+            <li class="pure-menu-item"><a href="{{ url_for('signup') }}" class="pure-menu-link">{% if session.logged_in %}Sign Out{% endif %}</a></li>
+        </ul>
+    </div>
+
+    <div class="content-wrapper" style="top: 20%">
+        <div class="content" style="padding: 0">
+            <table class="pure-table pure-table-horizontal" style="width: 100%">
+            <thead>
+                <tr>
+                    <th>#</th>
+                    <th>Project</th>
+                    <th>Publish Date</th>
+                    <th>Modify Date</th>
+                    <th>Operation</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>1</td>
+                    <td><a href="{{ url_for('project', project_id=1) }}" class="pure-menu-link" style="color: #1f8dd6;">Project Name</a></td>
+                    <td>Accord</td>
+                    <td>2009</td>
+                    <td><button class="button-error pure-button" style="background: rgb(202, 60, 60);">Delete</button></td>
+                </tr>
+            </tbody>
+        </table>
+        <form class="pure-form pure-form-stacked" style="width: 10%;margin-left: 20px;">
+        <fieldset>
+            <label for="project">Create a new project</label>
+            <input id="project" type="text">
+            <button type="submit" class="pure-button pure-button-primary">Submit</button>
+        </fieldset>
+    </form>
+        </div>
+    </div>
+
   {% else %}
-    Please log in
+    <div class="header">
+        <div class="home-menu pure-menu pure-menu-horizontal pure-menu-fixed">
+            <a class="pure-menu-heading" href="/">PDFMiner</a>
+            <ul class="pure-menu-list">
+                <li class="pure-menu-item"><a href="{{ url_for('signup') }}" class="pure-menu-link">{% if not session.logged_in %}Sign Up{% endif %}</a></li>
+                <li class="pure-menu-item"><a href="{{ url_for('login') }}" class="pure-menu-link">{% if not session.logged_in %}Sign In{% endif %}</a></li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="splash-container">
+        <div class="splash">
+            <h1 class="splash-head" style="text-transform: none;">Hello, Welcome to PPSite</h1>
+            <p class="splash-subhead" style="text-transform: none;">
+                PPSite is a website designed for writing english scientific papers.
+                You can easily manage your papers in PPSite. Besides, you can also get some help in writing paper with PPSite.
+                Hope you enjoy it!
+            </p>
+            <p>
+                <a href="#" class="pure-button pure-button-primary" style="text-transform: none;">Learn More >></a>
+            </p>
+        </div>
+    </div>
+
+    <div class="content-wrapper">
+        <div class="footer l-box is-center">
+            View the source of this layout to learn more. Made with love by the YUI Team.
+        </div>
+    </div>
   {% endif %}
 {% endblock %}

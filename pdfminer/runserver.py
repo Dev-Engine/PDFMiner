@@ -1,8 +1,12 @@
-# -*- coding: utf-8 -*-
-
+"""."""
+import os
 from flask import (Flask, request, session, redirect, url_for,
                    render_template, flash)
 
+from werkzeug import secure_filename
+
+UPLOAD_FOLDER = '/Users/tuzii/Develop'
+ALLOWED_EXTENSIONS = set(['pdf'])
 
 # create our little application :)
 app = Flask(__name__)
@@ -12,6 +16,7 @@ app.config.update(dict(
     DEBUG=True,
     SECRET_KEY='development key',
     USERNAME='admin',
+    UPLOAD_FOLDER=UPLOAD_FOLDER,
     PASSWORD='admin'
 ))
 app.config.from_envvar('FLASKR_SETTINGS', silent=True)
@@ -19,11 +24,26 @@ app.config.from_envvar('FLASKR_SETTINGS', silent=True)
 
 @app.route('/')
 def home():
+    """."""
     return render_template('home.html')
+
+
+@app.route('/project/<project_id>', methods=['GET', 'POST'])
+def project(project_id):
+    """."""
+    if request.method == 'POST':
+        file = request.files['file']
+        if file:
+            filename = secure_filename(file.filename)
+            file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+            return redirect(url_for('project',
+                                    project_id=1))
+    return render_template('project.html')
 
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
+    """."""
     error = None
     if request.method == 'POST':
         if request.form['username'] != app.config['USERNAME']:
@@ -37,8 +57,18 @@ def login():
     return render_template('login.html', error=error)
 
 
+@app.route('/signup', methods=['GET', 'POST'])
+def signup():
+    """."""
+    error = None
+    if request.method == 'POST':
+        return redirect(url_for('home'))
+    return render_template('signup.html', error=error)
+
+
 @app.route('/logout')
 def logout():
+    """."""
     session.pop('logged_in', None)
     flash('You were logged out')
     return redirect(url_for('home'))

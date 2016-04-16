@@ -1,0 +1,43 @@
+{% extends "base.html" %}
+{% block body %}
+  {% if session.logged_in %}
+    <div class="home-menu pure-menu pure-menu-horizontal pure-menu-fixed">
+        <a class="pure-menu-heading" href="/">PDFMiner</a>
+        <ul class="pure-menu-list">
+            <li class="pure-menu-item"><a href="{{ url_for('signup') }}" class="pure-menu-link">{% if session.logged_in %}Sign Out{% endif %}</a></li>
+        </ul>
+    </div>
+
+    <div class="content-wrapper" style="top: 20%">
+        <div class="content" style="padding: 0">
+            <table class="pure-table pure-table-horizontal" style="width: 100%">
+            <thead>
+                <tr>
+                    <th>#</th>
+                    <th>Project</th>
+                    <th>Publish Date</th>
+                    <th>Modify Date</th>
+                    <th>Operation</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>1</td>
+                    <td>asdjaksdj</td>
+                    <td>Accord</td>
+                    <td>2009</td>
+                    <td><button class="button-error pure-button" style="background: rgb(202, 60, 60);">Delete</button></td>
+                </tr>
+            </tbody>
+        </table>
+        <form class="pure-form pure-form-stacked" style="width: 10%;margin-left: 20px;">
+        <fieldset>
+            <label for="pdf">Upload a new PDF</label>
+            <input id="pdf" type="file">
+            <button type="submit" class="pure-button pure-button-primary">Submit</button>
+        </fieldset>
+    </form>
+        </div>
+    </div>
+  {% endif %}
+{% endblock %}

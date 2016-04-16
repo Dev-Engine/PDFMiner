@@ -1,7 +1,26 @@
 <!doctype html>
-<title>PDFMiner</title>
-<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='style.css') }}">
-<div class="page">
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>PDFMiner</title>
+  <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='pure/pure-min.css') }}">
+  <!--[if lte IE 8]>
+      <link rel="stylesheet" href="http://yui.yahooapis.com/pure/0.6.0/grids-responsive-old-ie-min.css">
+  <![endif]-->
+  <!--[if gt IE 8]><!-->
+      <link rel="stylesheet" href="http://yui.yahooapis.com/pure/0.6.0/grids-responsive-min.css">
+  <!--<![endif]-->
+
+  <link rel="stylesheet" href="http://netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css">
+  <!--[if lte IE 8]>
+      <link rel="stylesheet" href="css/layouts/marketing-old-ie.css">
+  <![endif]-->
+  <!--[if gt IE 8]><!-->
+      <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='style.css') }}">
+  <!--<![endif]-->
+</head>
+<body>
   {% if not session.logged_in %}
     <a href="{{ url_for('login') }}">log in</a>
   {% else %}
@@ -12,4 +31,5 @@
     <div class="flash">{{ message }}</div>
   {% endfor %}
   {% block body %}{% endblock %}
-</div>
+</body>
+</html>
