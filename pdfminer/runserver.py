@@ -5,6 +5,8 @@ from flask import (Flask, request, session, redirect, url_for,
 
 from werkzeug import secure_filename
 
+from model.models import db
+
 UPLOAD_FOLDER = '/Users/tuzii/Develop'
 ALLOWED_EXTENSIONS = set(['pdf'])
 
@@ -20,6 +22,8 @@ app.config.update(dict(
     PASSWORD='admin'
 ))
 app.config.from_envvar('FLASKR_SETTINGS', silent=True)
+
+db.init_app(app)
 
 
 @app.route('/')
