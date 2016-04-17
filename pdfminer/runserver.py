@@ -7,7 +7,7 @@ from werkzeug import secure_filename
 from werkzeug.security import generate_password_hash, check_password_hash
 
 from model.models import db
-from model.models import User
+from model.models import User, Project
 
 UPLOAD_FOLDER = '/Users/tuzii/Develop'
 ALLOWED_EXTENSIONS = set(['pdf'])
@@ -26,16 +26,39 @@ app.config.from_envvar('FLASKR_SETTINGS', silent=True)
 db.init_app(app)
 
 
-@app.route('/')
+@app.route('/', methods=['GET', 'POST'])
 def home():
     """."""
-    return render_template('home.html')
+    if request.method == "POST" and "project_name" in request.form:
+        username = session['username']
+        author = User.objects(name=username).first()
+
+        project_name = request.form['project_name']
+        project = Project(name=project_name)
+        project.author = author
+        project.save()
+
+        return redirect(url_for('home'))
+    else:
+        username = session['username']
+        author = User.objects(name=username).first()
+        projects = Project.objects(author=author).order_by('-created_at')
+
+        return render_template('home.html', projects=projects)
+
+
+@app.route('/project_del/<project_id>')
+def project_del(project_id):
+    """."""
+    Project.objects(pk=project_id).first().delete()
+    return redirect(url_for('home'))
 
 
 @app.route('/project/<project_id>')
 def project(project_id):
     """."""
-    return render_template('project.html')
+    project = Project.objects(pk=project_id).first()
+    return render_template('project.html', project=project)
 
 
 @app.route('/project_upload', methods=['POST'])
@@ -61,6 +84,7 @@ def login():
 
         if user and check_password_hash(user.password, password):
             session['logged_in'] = True
+            session['username'] = username
             flash('You were logged in')
             return redirect(url_for('home'))
     return render_template('login.html', error=error)

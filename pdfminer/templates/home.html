@@ -21,19 +21,22 @@
                 </tr>
             </thead>
             <tbody>
+                {% for project in projects %}
+                {% set rowloop = loop %}
                 <tr>
-                    <td>1</td>
-                    <td><a href="{{ url_for('project', project_id=1) }}" class="pure-menu-link" style="color: #1f8dd6;">Project Name</a></td>
-                    <td>Accord</td>
-                    <td>2009</td>
-                    <td><button class="button-error pure-button" style="background: rgb(202, 60, 60);">Delete</button></td>
+                    <td>{{ rowloop.index }}</td>
+                    <td><a href="{{ url_for('project', project_id=project.pk) }}" class="pure-menu-link" style="color: #1f8dd6;">{{ project.name }}</a></td>
+                    <td>{{ project.created_at.strftime('%Y-%m-%d %H:%M') }}</td>
+                    <td>{{ project.created_at.strftime('%Y-%m-%d %H:%M') }}</td>
+                    <td><a class="button-error pure-button" style="background: rgb(202, 60, 60);" href="{{ url_for('project_del', project_id=project.pk ) }}">Delete</a></td>
                 </tr>
+                {% endfor %}
             </tbody>
         </table>
-        <form class="pure-form pure-form-stacked" style="width: 10%;margin-left: 20px;">
+        <form class="pure-form pure-form-stacked" style="width: 10%;margin-left: 20px;" action="{{ url_for('home')}}" method="post">
         <fieldset>
             <label for="project">Create a new project</label>
-            <input id="project" type="text">
+            <input id="project" type="text" name="project_name">
             <button type="submit" class="pure-button pure-button-primary">Submit</button>
         </fieldset>
     </form>
