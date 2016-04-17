@@ -40,9 +40,12 @@ def home():
 
         return redirect(url_for('home'))
     else:
-        username = session['username']
-        author = User.objects(name=username).first()
-        projects = Project.objects(author=author).order_by('-created_at')
+        try:
+            username = session['username']
+            author = User.objects(name=username).first()
+            projects = Project.objects(author=author).order_by('-created_at')
+        except:
+            projects = []
 
         return render_template('home.html', projects=projects)
 
