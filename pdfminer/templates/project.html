@@ -21,19 +21,23 @@
                 </tr>
             </thead>
             <tbody>
+                {% for pdf in project.pdfs %}
+                {% set rowloop = loop %}
                 <tr>
-                    <td>1</td>
-                    <td>asdjaksdj</td>
-                    <td>Accord</td>
-                    <td>2009</td>
-                    <td><button class="button-error pure-button" style="background: rgb(202, 60, 60);">Delete</button></td>
+                    <td>{{ rowloop.index }}</td>
+                    <td>{{ pdf.name }}</td>
+                    <td>{{ pdf.created_at.strftime('%Y-%m-%d %H:%M') }}</td>
+                    <td>{{ pdf.created_at.strftime('%Y-%m-%d %H:%M') }}</td>
+                    <td><a class="button-error pure-button" style="background: rgb(202, 60, 60);" href="{{ url_for('pdf_del', pdf_name=pdf.name ) }}">delete</a></td>
                 </tr>
+                {% endfor %}
             </tbody>
         </table>
         <form class="pure-form pure-form-stacked" style="width: 10%;margin-left: 20px;" action="{{ url_for('project_upload') }}" method="post" enctype="multipart/form-data">
         <fieldset>
             <label for="pdf">Upload a new PDF</label>
             <input id="pdf" type="file" name="pdffile">
+            <input type="hidden" name="project_id" value="{{ project.pk }}">
             <button type="submit" class="pure-button pure-button-primary">Submit</button>
         </fieldset>
     </form>

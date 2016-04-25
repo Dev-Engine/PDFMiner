@@ -28,7 +28,7 @@
                     <td><a href="{{ url_for('project', project_id=project.pk) }}" class="pure-menu-link" style="color: #1f8dd6;">{{ project.name }}</a></td>
                     <td>{{ project.created_at.strftime('%Y-%m-%d %H:%M') }}</td>
                     <td>{{ project.created_at.strftime('%Y-%m-%d %H:%M') }}</td>
-                    <td><a class="button-error pure-button" style="background: rgb(202, 60, 60);" href="{{ url_for('project_del', project_id=project.pk ) }}">Delete</a></td>
+                    <td><a class="button-error pure-button" style="background: rgb(202, 60, 60);" href="{{ url_for('project_del', project_id=project.pk ) }}">delete</a></td>
                 </tr>
                 {% endfor %}
             </tbody>

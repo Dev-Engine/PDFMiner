@@ -1,5 +1,6 @@
 """."""
 import os
+import time
 from flask import (Flask, request, session, redirect, url_for,
                    render_template, flash)
 
@@ -7,9 +8,9 @@ from werkzeug import secure_filename
 from werkzeug.security import generate_password_hash, check_password_hash
 
 from model.models import db
-from model.models import User, Project
+from model.models import User, Project, PdfEm
 
-UPLOAD_FOLDER = '/Users/tuzii/Develop'
+UPLOAD_FOLDER = '/Users/Scen/Develop'
 ALLOWED_EXTENSIONS = set(['pdf'])
 
 # create our little application :)
@@ -21,7 +22,6 @@ app.config.update(dict(
     SECRET_KEY='development key',
     UPLOAD_FOLDER=UPLOAD_FOLDER,
 ))
-app.config.from_envvar('FLASKR_SETTINGS', silent=True)
 
 db.init_app(app)
 
@@ -68,12 +68,32 @@ def project(project_id):
 def project_upload():
     """."""
     if request.method == 'POST':
-        file = request.files['pdffile']
-        if file:
-            filename = secure_filename(file.filename)
-            file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
-            return redirect(url_for('project', project_id=1))
+        project_id = request.form['project_id']
+        up_file = request.files['pdffile']
+        current_project = Project.objects(pk=project_id)
+
+        username = session['username']
+        author = User.objects(name=username).first()
+        if up_file:
+            filename = (secure_filename(up_file.filename) +
+                        str(int(time.time())))
+            pdf_em = PdfEm(
+                name=filename,
+                author=author
+            )
+            current_project.update_one(push__pdfs=pdf_em)
+            up_file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+            return redirect(url_for('project', project_id=project_id))
     return render_template('project.html')
+
+
+@app.route('/pdf_del/<pdf_name>')
+def pdf_del(pdf_name):
+    """."""
+    project_id = request.form['project_id']
+    current_project = Project.objects(pk=project_id).first()
+    current_project.update_one(pull__pdfs={'name': pdf_name})
+    return redirect(url_for('project', project_id=project_id))
 
 
 @app.route('/login', methods=['GET', 'POST'])
@@ -81,7 +101,7 @@ def login():
     """."""
     error = None
     if request.method == "POST" and "username" in request.form:
-        username = request.form['username']
+        username = request.form["username"]
         password = request.form["password"]
         user = User.objects(name=username).first()
 
