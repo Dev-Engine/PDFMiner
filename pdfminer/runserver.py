@@ -4,14 +4,14 @@ import time
 from flask import (Flask, request, session, redirect, url_for,
                    render_template, flash)
 
-from werkzeug import secure_filename
+from werkzeug.utils import secure_filename
 from werkzeug.security import generate_password_hash, check_password_hash
 
 from model.models import db
 from model.models import User, Project, PdfEm
 
 UPLOAD_FOLDER = '/Users/Scen/Develop'
-ALLOWED_EXTENSIONS = set(['pdf'])
+ALLOWED_EXTENSIONS = {'pdf'}
 
 # create our little application :)
 app = Flask(__name__)
@@ -34,9 +34,9 @@ def home():
         author = User.objects(name=username).first()
 
         project_name = request.form['project_name']
-        project = Project(name=project_name)
-        project.author = author
-        project.save()
+        current_project = Project(name=project_name)
+        current_project.author = author
+        current_project.save()
 
         return redirect(url_for('home'))
     else:
@@ -77,6 +77,7 @@ def project_upload():
         if up_file:
             filename = (secure_filename(up_file.filename) +
                         str(int(time.time())))
+            filename = filename.replace('.pdf', '') + '.pdf'
             pdf_em = PdfEm(
                 name=filename,
                 author=author
@@ -94,6 +95,13 @@ def pdf_del(pdf_name):
     current_project = Project.objects(pk=project_id).first()
     current_project.update_one(pull__pdfs={'name': pdf_name})
     return redirect(url_for('project', project_id=project_id))
+
+
+@app.route('/pdf/detail/<pdf_name>')
+def pdf_detail(pdf_name):
+    """."""
+    pdf = app.config['UPLOAD_FOLDER'] + '/' + pdf_name
+    return render_template('pdf_detail.html', pdf=pdf)
 
 
 @app.route('/login', methods=['GET', 'POST'])

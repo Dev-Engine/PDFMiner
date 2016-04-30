@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+{% block body %}
+  {% if session.logged_in %}
+    <div class="home-menu pure-menu pure-menu-horizontal pure-menu-fixed">
+        <a class="pure-menu-heading" href="/">PDFMiner</a>
+        <ul class="pure-menu-list">
+            <li class="pure-menu-item"><a href="{{ url_for('signup') }}" class="pure-menu-link">{% if session.logged_in %}Sign Out{% endif %}</a></li>
+        </ul>
+    </div>
+
+    <div class="content-wrapper" style="top: 20%">
+        <div class="content" style="padding: 0">
+            <embed src="{{ pdf }}" width="800px" height="2100px">
+        </div>
+    </div>
+  {% endif %}
+{% endblock %}
