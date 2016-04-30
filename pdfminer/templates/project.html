@@ -28,7 +28,7 @@
                     <td><a href="{{ url_for('pdf_detail', pdf_name=pdf.name ) }}">{{ pdf.name }}</a></td>
                     <td>{{ pdf.created_at.strftime('%Y-%m-%d %H:%M') }}</td>
                     <td>{{ pdf.created_at.strftime('%Y-%m-%d %H:%M') }}</td>
-                    <td><a class="button-error pure-button" style="background: rgb(202, 60, 60);" href="{{ url_for('pdf_del', pdf_name=pdf.name ) }}">delete</a></td>
+                    <td><a class="button-error pure-button" style="background: rgb(202, 60, 60);" href="{{ url_for('pdf_del', project_id=project.id, pdf_name=pdf.name ) }}">delete</a></td>
                 </tr>
                 {% endfor %}
             </tbody>

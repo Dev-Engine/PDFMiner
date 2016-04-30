@@ -10,7 +10,8 @@ from werkzeug.security import generate_password_hash, check_password_hash
 from model.models import db
 from model.models import User, Project, PdfEm
 
-UPLOAD_FOLDER = '/Users/Scen/Develop'
+UPLOAD_FOLDER = os.path.abspath(os.path.dirname('')) + '/static/pdfs'
+
 ALLOWED_EXTENSIONS = {'pdf'}
 
 # create our little application :)
@@ -60,8 +61,8 @@ def project_del(project_id):
 @app.route('/project/<project_id>')
 def project(project_id):
     """."""
-    project = Project.objects(pk=project_id).first()
-    return render_template('project.html', project=project)
+    current_project = Project.objects(pk=project_id).first()
+    return render_template('project.html', project=current_project)
 
 
 @app.route('/project_upload', methods=['POST'])
@@ -88,20 +89,26 @@ def project_upload():
     return render_template('project.html')
 
 
-@app.route('/pdf_del/<pdf_name>')
-def pdf_del(pdf_name):
+@app.route('/pdf_del/<project_id>/<pdf_name>')
+def pdf_del(project_id, pdf_name):
     """."""
-    project_id = request.form['project_id']
-    current_project = Project.objects(pk=project_id).first()
-    current_project.update_one(pull__pdfs={'name': pdf_name})
+    current_project = Project.objects(pk=project_id)
+    a = current_project.first()
+    for i in a.pdfs:
+        if i.name == pdf_name:
+            pdf_em = PdfEm(
+               name=pdf_name,
+               author=i.author,
+               created_at=i.created_at
+            )
+            current_project.update_one(pull__pdfs=pdf_em)
     return redirect(url_for('project', project_id=project_id))
 
 
 @app.route('/pdf/detail/<pdf_name>')
 def pdf_detail(pdf_name):
     """."""
-    pdf = app.config['UPLOAD_FOLDER'] + '/' + pdf_name
-    return render_template('pdf_detail.html', pdf=pdf)
+    return render_template('pdf_detail.html', pdf_name=pdf_name)
 
 
 @app.route('/login', methods=['GET', 'POST'])

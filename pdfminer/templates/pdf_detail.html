@@ -8,9 +8,9 @@
         </ul>
     </div>
 
-    <div class="content-wrapper" style="top: 20%">
-        <div class="content" style="padding: 0">
-            <embed src="{{ pdf }}" width="800px" height="2100px">
+    <div class="content-wrapper" style="top: 1%; height: 100%;">
+        <div class="content" style="padding: 0; height: 100%;">
+            <embed src="{{ url_for('static', filename='pdfs/' + pdf_name) }}" width="800px" style="height: 100%">
         </div>
     </div>
   {% endif %}
