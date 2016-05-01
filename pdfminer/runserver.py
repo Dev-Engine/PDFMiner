@@ -1,8 +1,11 @@
 """."""
 import os
 import time
+import urllib
+import json
+import xmltodict
 from flask import (Flask, request, session, redirect, url_for,
-                   render_template, flash)
+                   render_template, flash, make_response)
 
 from werkzeug.utils import secure_filename
 from werkzeug.security import generate_password_hash, check_password_hash
@@ -126,6 +129,23 @@ def login():
             flash('You were logged in')
             return redirect(url_for('home'))
     return render_template('login.html', error=error)
+
+
+@app.route('/pdf/search', methods=['POST'])
+def pdf_search():
+    """."""
+    if request.method == "POST" and "keywords" in request.form:
+        keywords = request.form["keywords"]
+        api = "http://ieeexplore.ieee.org/gateway/ipsSearch.jsp?" \
+              "querytext=%s&rs=11" % keywords
+
+        # opener = urllib.FancyURLopener({})
+        # f = opener.open(api)
+        # o = xmltodict.parse(f.read())
+        f = os.path.abspath(os.path.dirname('')) + '/pdfminer/static/ipsSearch.jsp.xml'
+
+        response = make_response(json.dumps(o))
+        return response
 
 
 @app.route('/signup', methods=['GET', 'POST'])
