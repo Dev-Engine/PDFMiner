@@ -30,14 +30,13 @@
             success: function(data) {
                 self.text('Search');
                 console.log(data);
+                var r = $(search_tpl).clone();
                 if (!data.root) {
-                    var r = $(search_tpl).clone();
                     $(r[0])
                         .text(data.Error);
                     r.appendTo('#search_result');
                 } else {
                     for (var i = 0; i < data.root.document.length; i ++) {
-                        var r = $(search_tpl).clone();
                         $(r[0])
                             .attr('href', data.root.document[i].mdurl)
                             .text(data.root.document[i].pubtitle);
