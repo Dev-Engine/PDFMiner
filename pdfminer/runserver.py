@@ -136,13 +136,14 @@ def pdf_search():
     """."""
     if request.method == "POST" and "keywords" in request.form:
         keywords = request.form["keywords"]
-        api = "http://ieeexplore.ieee.org/gateway/ipsSearch.jsp?" \
-              "querytext=%s&rs=11" % keywords
 
-        # opener = urllib.FancyURLopener({})
-        # f = opener.open(api)
-        # o = xmltodict.parse(f.read())
-        f = os.path.abspath(os.path.dirname('')) + '/pdfminer/static/ipsSearch.jsp.xml'
+        api = "http://ieeexplore.ieee.org/gateway/ipsSearch.jsp?" \
+              "querytext=" + keywords + "&hc=10&rs=11&sortfield=ti&" \
+              "sortorder=asc"
+
+        opener = urllib.FancyURLopener({})
+        f = opener.open(api)
+        o = xmltodict.parse(f.read())
 
         response = make_response(json.dumps(o))
         return response

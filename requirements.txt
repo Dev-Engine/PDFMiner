@@ -1,3 +1,4 @@
 flask
 mongoengine
 flask-mongoengine
+xmltodict

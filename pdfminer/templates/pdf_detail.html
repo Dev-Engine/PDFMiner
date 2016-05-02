@@ -11,11 +11,14 @@
     <div class="content-wrapper" style="top: 1%; height: 100%;">
         <div class="content" style="padding: 0; height: 100%;">
             <embed src="{{ url_for('static', filename='pdfs/' + pdf_name) }}" width="800px" style="height: 100%">
-            <div class="search" style="display: inline-block; position: absolute; top: 20%; margin-left: 20px; left: 830px;">
+            <div class="search" style="display: inline-block; position: absolute; top: 20%; margin-left: 20px; left: 830px; padding-right: 40px;">
+                <h3>Search with IEEE:</h3>
                 <form class="pure-form">
                     <input type="text" class="pure-input-rounded" name="pdf_keywords">
                     <button type="button" class="pure-button" id="pdf_search">Search</button>
                 </form>
+                <hr />
+                <div id="search_result"></div>
             </div>
         </div>
     </div>
