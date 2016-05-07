@@ -138,7 +138,7 @@ def pdf_search():
         keywords = request.form["keywords"]
 
         api = "http://ieeexplore.ieee.org/gateway/ipsSearch.jsp?" \
-              "querytext=" + keywords + "&hc=10&rs=11&sortfield=ti&" \
+              "jn=" + keywords + "&hc=10&rs=11&sortfield=ti&" \
               "sortorder=asc"
 
         opener = urllib.FancyURLopener({})
@@ -169,6 +169,7 @@ def signup():
 def logout():
     """."""
     session.pop('logged_in', None)
+    session.pop('username', None)
     flash('You were logged out')
     return redirect(url_for('home'))
 
